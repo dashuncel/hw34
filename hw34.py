@@ -43,22 +43,35 @@ class YaMetrikaStatistica:
         headers = {'Authorization': f'OAuth {self.token}'}
         return headers
 
-    def get_visits(self):
+    def get_params(self):
+        params = {'direct_client_logins': 'korovkinada',
+                  'ids': self.counter,
+                  'metrics': 'ym:s:visits,ym:s:pageviews,ym:s:users'
+                 }
+        return params
+
+    @property
+    def data(self):
         response = requests.get(f'{self.section}',
-                                headers=self.get_headers(), params='metrics=ym:s:visits,ym:s:users')
+                                headers=self.get_headers(),
+                                params=self.get_params())
+        self
         return response.json()
+
+    def get_visits(self):
+        print(self.data)
 
     def get_views(self):
-        response = requests.get(f'{self.section}',
-                                headers=self.get_headers())
-        return response.json()
+        pass
 
-    def get_visitors(self):
-        response = requests.get(f'{self.section}',
-                                headers=self.get_headers())
-        return response.json()
+    def get_users(self):
+        pass
 
 
 my_user = YaMetrikaManagement(TOKEN)
-counter = my_user.counters[0]
-print(counter)
+counter = my_user.counters
+print(type(counter))
+
+my_stat = YaMetrikaStatistica(TOKEN, counter)
+my_stat.get_visits()
+
