@@ -60,21 +60,19 @@ class YaMetrikaStatistica:
         return response.json()
 
     def get_visits(self):
-        print(self.data['data'])
-        #return [c['id'] for c in self.data.json()['counters']]
-        #print(self.data['query']['metrics'])
+        return self.data['data'][0]['metrics'][0]
 
     def get_pageviews(self):
-        print(self.data)
+        return self.data['data'][0]['metrics'][1]
 
     def get_users(self):
-        print(self.data)
+        return self.data['data'][0]['metrics'][2]
 
 
 my_user = YaMetrikaManagement(TOKEN)
 counters = my_user.counters
-
-
 my_stat = YaMetrikaStatistica(TOKEN, counters[0])
-my_stat.get_visits()
+print('Количество визитов:', my_stat.get_visits())
+print('Количество просмотров:', my_stat.get_pageviews())
+print('Количество пользователей:', my_stat.get_users())
 
